@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"expvar"
 	"fmt"
+	"log"
 	"net"
 	"sync"
 
@@ -54,7 +55,7 @@ func (r *pmapRegistry) String() string {
 // Update marks the port used by a brick with a specified state. This
 // is called when a brick signs in.
 func (r *pmapRegistry) Update(port int, brickpath string, conn net.Conn, pid int) error {
-
+	log.Printf("Updating brick %v with port %v", brickpath, port)
 	if port < portMin || port > portMax {
 		return fmt.Errorf("registry.Update(): invalid port %d", port)
 	}

@@ -53,7 +53,7 @@ fi
 if [ "$FASTBUILD" == "yes" ];then
   # Enable the `go build -i` flag to install dependencies during build and
   # allow faster rebuilds of GD2.
-  INSTALLFLAG="-i"
+  INSTALLFLAG=""
 fi
 
 

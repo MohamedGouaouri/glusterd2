@@ -71,17 +71,26 @@ func (b *Glusterfsd) Args() []string {
 		shost = "127.0.0.1"
 	}
 
+	bport, _ := GetFreePort()
+
 	b.args = []string{}
 	b.args = append(b.args, "--volfile-server", shost)
 	b.args = append(b.args, "--volfile-server-port", sport)
 	b.args = append(b.args, "--volfile-id", volfileID)
 	b.args = append(b.args, "-p", b.PidFile())
 	b.args = append(b.args, "-S", b.SocketFile())
+	b.args = append(b.args, "--process-name", "brick")
 	b.args = append(b.args, "--brick-name", b.brickinfo.Path)
+	b.args = append(b.args, "--brick-port", fmt.Sprintf("%v", bport))
+
 	b.args = append(b.args, "-l", logFile)
 	b.args = append(b.args,
 		"--xlator-option",
 		fmt.Sprintf("*-posix.glusterd-uuid=%s", gdctx.MyUUID))
+
+	b.args = append(b.args,
+		"--xlator-option",
+		fmt.Sprintf("%s-server.listen-port=%d", b.brickinfo.VolumeName, bport))
 
 	return b.args
 }
@@ -144,7 +153,7 @@ const BrickStartMaxRetries = 3
 // Until https://review.gluster.org/#/c/16200/ gets into a release.
 // And this is fully safe too as no other well-known errno exists after 132
 
-//anotherEADDRINUSE is errno generated for rpc connection
+// anotherEADDRINUSE is errno generated for rpc connection
 const anotherEADDRINUSE = syscall.Errno(0x9E) // 158
 
 func errorContainsErrno(err error, errno syscall.Errno) bool {
@@ -164,7 +173,7 @@ func errorContainsErrno(err error, errno syscall.Errno) bool {
 
 // These functions are used in vol-create, vol-expand and vol-shrink (TBD)
 
-//StartBrick starts glusterfsd process
+// StartBrick starts glusterfsd process
 func (b Brickinfo) StartBrick(logger log.FieldLogger) error {
 
 	for i := 0; i < BrickStartMaxRetries; i++ {
@@ -193,7 +202,7 @@ func (b Brickinfo) StartBrick(logger log.FieldLogger) error {
 	return nil
 }
 
-//TerminateBrick will stop glusterfsd process
+// TerminateBrick will stop glusterfsd process
 func (b Brickinfo) TerminateBrick() error {
 
 	brickDaemon, err := NewGlusterfsd(b)
@@ -238,7 +247,7 @@ func (b Brickinfo) TerminateBrick() error {
 	return nil
 }
 
-//StopBrick will stop glusterfsd process
+// StopBrick will stop glusterfsd process
 func (b Brickinfo) StopBrick(logger log.FieldLogger) error {
 
 	brickDaemon, err := NewGlusterfsd(b)
@@ -248,7 +257,7 @@ func (b Brickinfo) StopBrick(logger log.FieldLogger) error {
 	return daemon.Stop(brickDaemon, true, logger)
 }
 
-//CreateBrickSizeInfo parses size information for response
+// CreateBrickSizeInfo parses size information for response
 func CreateBrickSizeInfo(size *SizeInfo) api.SizeInfo {
 	return api.SizeInfo{
 		Used:     size.Used,
@@ -257,7 +266,7 @@ func CreateBrickSizeInfo(size *SizeInfo) api.SizeInfo {
 	}
 }
 
-//CreateBrickInfo parses brick information for response
+// CreateBrickInfo parses brick information for response
 func CreateBrickInfo(b *Brickinfo) api.BrickInfo {
 	return api.BrickInfo{
 		ID:         b.ID,
@@ -270,7 +279,7 @@ func CreateBrickInfo(b *Brickinfo) api.BrickInfo {
 	}
 }
 
-//CreateSizeInfo return size of a brick
+// CreateSizeInfo return size of a brick
 func CreateSizeInfo(fstat *syscall.Statfs_t) *SizeInfo {
 	var s SizeInfo
 	if fstat != nil {
@@ -281,7 +290,7 @@ func CreateSizeInfo(fstat *syscall.Statfs_t) *SizeInfo {
 	return &s
 }
 
-//CreateBrickStatusRsp creates response related to brick process
+// CreateBrickStatusRsp creates response related to brick process
 func CreateBrickStatusRsp(brickStatuses []Brickstatus) []*api.BrickStatus {
 	var brickStatusesRsp []*api.BrickStatus
 	for _, status := range brickStatuses {
@@ -298,4 +307,33 @@ func CreateBrickStatusRsp(brickStatuses []Brickstatus) []*api.BrickStatus {
 		brickStatusesRsp = append(brickStatusesRsp, s)
 	}
 	return brickStatusesRsp
+}
+
+//	func GetFreePort() (port int, err error) {
+//		var a *net.TCPAddr
+//		if a, err = net.ResolveTCPAddr("tcp", "localhost:0"); err == nil {
+//			var l *net.TCPListener
+//			if l, err = net.ListenTCP("tcp", a); err == nil {
+//				defer l.Close()
+//				return l.Addr().(*net.TCPAddr).Port, nil
+//			}
+//		}
+//		return
+//	}
+func GetFreePort() (int, error) {
+	const basePort = 49152
+	const maxPort = 60999
+
+	for port := basePort; port <= maxPort; port++ {
+		addr := fmt.Sprintf(":%d", port)
+		// Try to listen on the port
+		ln, err := net.Listen("tcp", addr)
+		if err != nil {
+			// If there is an error, the port is likely in use, so try the next one.
+			continue
+		}
+		ln.Close() // Close the listener immediately.
+		return port, nil
+	}
+	return 0, errors.New("no free port available in the given range")
 }

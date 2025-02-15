@@ -1,0 +1,86 @@
+module github.com/gluster/glusterd2
+
+go 1.23
+
+toolchain go1.23.6
+
+require (
+	github.com/asaskevich/govalidator v0.0.0-20171111151018-521b25f4b05f
+	github.com/beorn7/perks v0.0.0-20160804104726-4c0e84591b9a
+	github.com/boltdb/bolt v1.3.0
+	github.com/cespare/xxhash v1.1.0
+	github.com/cockroachdb/cmux v0.0.0-20170110192607-30d10be49292
+	github.com/coreos/etcd v3.3.26+incompatible
+	github.com/coreos/go-semver v0.3.0
+	github.com/coreos/go-systemd v0.0.0-20161114122254-48702e0da86b
+	github.com/coreos/pkg v0.0.0-20160727233714-3ac0863d7acf
+	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/fsnotify/fsnotify v1.7.0
+	github.com/ghodss/yaml v1.0.0
+	github.com/gogo/protobuf v1.3.2
+	github.com/golang/protobuf v1.5.3
+	github.com/google/btree v1.1.3
+	github.com/gorilla/context v1.1.1
+	github.com/gorilla/handlers v1.3.0
+	github.com/gorilla/mux v1.8.1
+	github.com/grpc-ecosystem/go-grpc-prometheus v0.0.0-20160910222444-6b7015e65d36
+	github.com/grpc-ecosystem/grpc-gateway v1.2.0
+	github.com/hashicorp/hcl v1.0.0
+	github.com/inconshreveable/mousetrap v1.1.0
+	github.com/jonboulle/clockwork v0.1.0
+	github.com/justinas/alice v0.0.0-20171023064455-03f45bd4b7da
+	github.com/magiconair/properties v1.8.7
+	github.com/mattn/go-runewidth v0.0.3-0.20170510074858-97311d9f7767
+	github.com/matttproud/golang_protobuf_extensions v1.0.1
+	github.com/mitchellh/mapstructure v1.5.0
+	github.com/olekukonko/tablewriter v0.0.0-20180130162743-b8a9be070da4
+	github.com/pborman/uuid v1.2.1
+	github.com/pelletier/go-toml v1.0.1
+	github.com/petar/GoLLRB v0.0.0-20130427215148-53be0d36a84c
+	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
+	github.com/prometheus/client_golang v0.8.0
+	github.com/prometheus/client_model v0.0.0-20170216185247-6f3806018612
+	github.com/prometheus/common v0.0.0-20170220103846-49fee292b27b
+	github.com/prometheus/procfs v0.0.0-20170216223256-a1dba9ce8bae
+	github.com/rasky/go-xdr v0.0.0-20170124162913-1a41d1a06c93
+	github.com/sirupsen/logrus v1.9.3
+	github.com/spf13/afero v1.11.0
+	github.com/spf13/cast v1.6.0
+	github.com/spf13/cobra v1.8.1
+	github.com/spf13/jwalterweatherman v0.0.0-20170109133355-fa7ca7e836cf
+	github.com/spf13/pflag v1.0.6
+	github.com/spf13/viper v1.19.0
+	github.com/stretchr/testify v1.10.0
+	github.com/thejerf/suture v2.0.1+incompatible
+	github.com/ugorji/go v0.0.0-20170107133203-ded73eae5db7
+	github.com/xiang90/probing v0.0.0-20160813154853-07dd2e8dfe18
+	golang.org/x/crypto v0.21.0
+	golang.org/x/net v0.23.0
+	golang.org/x/sys v0.29.0
+	golang.org/x/text v0.14.0
+	google.golang.org/grpc v1.29.1
+	gopkg.in/yaml.v2 v2.2.8
+	// go.opencensus.io v0.20.0
+)
+
+require (
+	github.com/google/uuid v1.6.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
+	github.com/sagikazarmark/locafero v0.4.0 // indirect
+	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
+	github.com/sourcegraph/conc v0.3.0 // indirect
+	github.com/subosito/gotenv v1.6.0 // indirect
+	go.etcd.io/bbolt v1.4.0 // indirect
+	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/multierr v1.9.0 // indirect
+	go.uber.org/zap v1.21.0 // indirect
+	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240311132316-a219d84964c2 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240314234333-6e1732d8331c // indirect
+	google.golang.org/protobuf v1.33.0 // indirect
+	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
+
+replace github.com/coreos/bbolt => go.etcd.io/bbolt v1.4.0

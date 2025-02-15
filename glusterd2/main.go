@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/gluster/glusterd2/glusterd2/brickmux"
-	"github.com/gluster/glusterd2/glusterd2/commands/volumes"
+	volumecommands "github.com/gluster/glusterd2/glusterd2/commands/volumes"
 	"github.com/gluster/glusterd2/glusterd2/conf"
 	"github.com/gluster/glusterd2/glusterd2/daemon"
 	"github.com/gluster/glusterd2/glusterd2/events"
@@ -17,7 +17,7 @@ import (
 	"github.com/gluster/glusterd2/glusterd2/pmap"
 	"github.com/gluster/glusterd2/glusterd2/servers"
 	"github.com/gluster/glusterd2/glusterd2/store"
-	"github.com/gluster/glusterd2/glusterd2/transactionv2"
+	transaction "github.com/gluster/glusterd2/glusterd2/transactionv2"
 	"github.com/gluster/glusterd2/glusterd2/transactionv2/cleanuphandler"
 	gdutils "github.com/gluster/glusterd2/glusterd2/utils"
 	"github.com/gluster/glusterd2/glusterd2/volgen"
